@@ -1,0 +1,7 @@
+.findUs__bg {
+    background: var(--color-FAF8F1);
+    background-position: center;
+    background-size: cover;
+    background-repeat: repeat;
+    background-attachment: fixed;
+  }
