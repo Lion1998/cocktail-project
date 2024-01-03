@@ -27,3 +27,12 @@ select{
     border: none;
     border-radius: 10px;
     }
+
+.auth_form_container_table_order{
+    background-image:linear-gradient(79deg,#884A39 ,#C38154 60%,#FFC26F );
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border: 5px solid #F9E0BB;
+    border-radius: 160px;
+}

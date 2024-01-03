@@ -6,6 +6,9 @@
     background: var(--color-FAF8F1);
     padding: 1rem 2rem;
     position: fixed;
+    align-content: flex-end;
+    flex-direction: column;
+    
 }
 
 
