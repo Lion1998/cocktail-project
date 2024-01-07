@@ -1,8 +1,7 @@
-import './LoginRegister.css';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState } from "react";
 import { Context } from "../../Context";
-import { useNavigate } from 'react-router-dom';
-import BookTable from '../BookTable/BookTable';
+import { useNavigate } from "react-router-dom";
+import BookTable from "../BookTable/BookTable";
 
 export default function Login() {
   const { state, dispatch } = useContext(Context);
@@ -12,7 +11,7 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
+
     try {
       const result = await fetch("https://localhost:7213/api/Authentication", {
         method: "post",
@@ -22,27 +21,25 @@ export default function Login() {
           password: password,
         }),
       });
-  
+
       if (!result.ok) {
         throw new Error(`Request failed with status: ${result.status}`);
       }
-      
+
       const data = await result.text();
-      console.log("Response from server:", data); 
-      dispatch({ type: "setToken", payload: data, userType: data.type });
-  
-      if (data) {
-        if (data.type === "Admin") {
-          navigate("/home");
-        } else {
-          navigate("/book_table");
-        }
+      console.log("Response from server:", data);
+
+      dispatch({ type: "setToken", payload: data.token, userType: data.type });
+
+      if (data.type === "Admin") {
+        navigate("/admin");
+      } else {
+        navigate("/book_table");
       }
     } catch (error) {
       console.error(error);
     }
   };
-  
 
   const navigateRegister = () => {
     navigate("/register");
@@ -58,16 +55,17 @@ export default function Login() {
         <form onSubmit={handleLogin}>
           <h2>Login</h2>
           <div className="auth_form_container">
-            <label htmlFor="email">email</label>
+            <label htmlFor="email">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="youreamil@******.com"
+              placeholder="youremail@******.com"
               id="email"
               name="email"
+              required
             />
-            <label htmlFor="password">password</label>
+            <label htmlFor="password">Password</label>
             <input
               type="password"
               value={password}
@@ -75,19 +73,20 @@ export default function Login() {
               placeholder="********"
               id="password"
               name="password"
+              required
             />
             <button type="submit">Log In</button>
-                  <button className="link-btn" onClick={navigateRegister}>
-        Don't have an account? Register here.
-      </button>
-      <button className="button_SendHome" onClick={navigateSite}>
-        Back to Site
-      </button>
+            <button className="link-btn" onClick={navigateRegister}>
+              Don't have an account? Register here.
+            </button>
+            <button className="button_SendHome" onClick={navigateSite}>
+              Back to Site
+            </button>
           </div>
         </form>
       ) : (
-        <BookTable />
+        <BookTable/>
       )}
     </div>
   );
-};
+}

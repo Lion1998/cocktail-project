@@ -36,3 +36,12 @@ select{
     border: 5px solid #F9E0BB;
     border-radius: 160px;
 }
+.button_SendHome{
+    border: none;
+    background-color:white;
+    border-radius: 20px;
+    cursor: pointer;
+    color: #191717;
+    text-align: center;
+    width: 125px;
+}
