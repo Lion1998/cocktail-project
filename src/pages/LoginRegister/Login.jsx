@@ -26,12 +26,12 @@ export default function Login() {
         throw new Error(`Request failed with status: ${result.status}`);
       }
 
-      const data = await result.text();
+      const data = await result.json();
       console.log("Response from server:", data);
 
       dispatch({ type: "setToken", payload: data.token, userType: data.type });
 
-      if (data.type === "Admin") {
+      if (data.user.type === "Admin") {
         navigate("/admin");
       } else {
         navigate("/book_table");
