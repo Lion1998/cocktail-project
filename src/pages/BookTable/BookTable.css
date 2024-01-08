@@ -50,3 +50,19 @@ select{
     background-color: gray;
     cursor: not-allowed;
 }
+@media only screen and (max-width: 600px) {
+    .auth_form_table_order {
+      flex-direction: column;
+      padding: 2rem;
+    }
+  
+    .auth_form_table_order select {
+      margin: 0.5rem 0;
+    }
+  
+    .auth_form_container_table_order {
+      padding: 1rem;
+      border-radius: 12px;
+    }
+  }
+  
