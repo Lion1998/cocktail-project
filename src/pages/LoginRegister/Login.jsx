@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 import React, { useContext, useState } from "react";
 import { Context } from "../../Context";
 import { useNavigate } from "react-router-dom";
@@ -23,13 +24,12 @@ export default function Login() {
       });
 
       if (!result.ok) {
-        throw new Error(`Request failed with status: ${result.status}`);
+        throw new Error('Request failed with status: ${result.status}');
       }
 
       const data = await result.json();
-      console.log("Response from server:", data);
 
-      dispatch({ type: "setToken", payload: data.token, userType: data.type });
+      dispatch({ type: "setToken", payload: data });
 
       if (data.user.type === "Admin") {
         navigate("/admin");
@@ -87,6 +87,6 @@ export default function Login() {
       ) : (
         <BookTable/>
       )}
-    </div>
-  );
+    </div>
+  );
 }

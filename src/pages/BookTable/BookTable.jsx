@@ -1,48 +1,62 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect, useContext } from "react";
 import "./BookTable.css";
 import { useNavigate } from "react-router-dom";
+import { Context } from "../../Context";
 
 export default function BookTable() {
-  const [seats, setSeats] = useState([]);
-  const [areas, setAreas] = useState([]);
+  const { state } = useContext(Context)
+  const [tables, setTables] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [times, setTimes] = useState([]);
-  const [selectedSeat, setSelectedSeat] = useState("");
+  const [selectedNumOfSeats, setSelectedNumOfSeats] = useState("");
   const [selectedArea, setSelectedArea] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
-  const navigate = useNavigate();
+  const [submitted, setSubmitted] = useState(false)
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  
+  const filteredTables = tables.filter(table => 
+    (selectedArea === "" || table.area === selectedArea)
+    && (selectedNumOfSeats === "" || table.seats >= selectedNumOfSeats)
+    && (selectedTime === "" || selectedDate === "" || !orders.some(order => order.tablesID === table.id && order.date.split('T')[0] === selectedDate && order.expectedArrivalID === selectedTime))
+    )
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+      fetchData();
+    }, []);
+    
+    const fetchData = async () => {
+      try {
+      const tables = await fetch("https://localhost:7213/Table").then(res => res.json());
+      const times = await fetch("https://localhost:7213/Order/AriivalTime").then(res => res.json());
+      const orders = await fetch("https://localhost:7213/Order/Orders").then(res => res.json());
 
-  const fetchData = async () => {
-    try {
-      const seatsResponse = await fetch("https://localhost:7213/Seats");
-      const areasResponse = await fetch("https://localhost:7213/Areas");
-      const timesResponse = await fetch("https://localhost:7213/Times");
-
-      const seatsResult = await seatsResponse.json();
-      const areasResult = await areasResponse.json();
-      const timesResult = await timesResponse.json();
-
-      setSeats(seatsResult);
-      setAreas(areasResult);
-      setTimes(timesResult);
+      setTables(tables);
+      setTimes(times);
+      setOrders(orders)
     } catch (error) {
       console.error("Failed to fetch data from the API:", error);
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Perform action with selected data
-    console.log({
-      selectedSeat,
-      selectedArea,
-      selectedTime,
-      selectedDate,
-    });
+    const result = await fetch(
+      'https://localhost:7213/Order', 
+      { 
+        method: 'post', 
+        headers: { "content-type": "application/json" }, 
+        body: JSON.stringify({
+          tablesID: filteredTables[0].id,
+          expectedArrivalID: selectedTime,
+          userID: state.user.id,
+          date: selectedDate,
+        })
+      })
+      await fetchData()
+      setSubmitted(true)
   };
   const navigateSite = () => {
     navigate("/");
@@ -53,22 +67,25 @@ export default function BookTable() {
               Back to Site
             </button>
       <form className="auth_form_container_table_order" onSubmit={handleSubmit}>
+      {submitted ? <>
+        <h1>Thank you for ordering</h1>
+        <div>You selected seat {selectedArea} with {selectedNumOfSeats} seats,
+        Date: {selectedDate}</div>
+        </> : <>      
         <h1>Reservation</h1>
         <div className="auth_form_table_order">
           <select
             className="form-select"
-            onChange={(e) => setSelectedSeat(e.target.value)}
-            value={selectedSeat}
+            onChange={(e) => setSelectedNumOfSeats(e.target.value)}
+            value={selectedNumOfSeats}
             required
           >
             <option value="" disabled>
-              Select Seats
+              Select Number of Seats
             </option>
-            {seats.map((seat) => (
-              <option key={seat.id} value={seat.id}>
-                {seat.name}
-              </option>
-            ))}
+            {[...Array(4).keys()].map(i => {
+              return <option key={i} value={i + 1}>{i + 1}</option>
+            })}
           </select>
 
           <select
@@ -80,11 +97,9 @@ export default function BookTable() {
             <option value="" disabled>
               Select Area
             </option>
-            {areas.map((area) => (
-              <option key={area.id} value={area.id}>
-                {area.name}
-              </option>
-            ))}
+            {[...new Set(tables.map(table => table.area))].map(area => {
+              return <option key={area} value={area}>{area}</option>
+            })}
           </select>
 
           <select
@@ -98,7 +113,7 @@ export default function BookTable() {
             </option>
             {times.map((time) => (
               <option key={time.id} value={time.id}>
-                {time.name}
+                {time.time}
               </option>
             ))}
           </select>
@@ -108,12 +123,13 @@ export default function BookTable() {
             type="date"
             onChange={(e) => setSelectedDate(e.target.value)}
             value={selectedDate}
+            min={new Date().toISOString().split('T')[0]}
             required
           />
 
-          <button type="submit">Order</button>
-        </div>
+          <button type="submit" className="submit-button" disabled={filteredTables.length === 0}>Order ({filteredTables.length} tables left)</button>
+        </div></>}
       </form>
-    </div>
-  );
+    </div>
+  );
 }

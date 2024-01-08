@@ -45,3 +45,8 @@ select{
     text-align: center;
     width: 125px;
 }
+
+.submit-button:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}

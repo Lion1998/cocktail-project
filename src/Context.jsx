@@ -2,9 +2,9 @@ import { createContext, useReducer } from "react";
 
 export const Context = createContext();
 
-const initState = {
-  Boocking: [],
+const initState = localStorage.getItem("state")? JSON.parse(localStorage.getItem("state")) :{
   token: null,
+  user: null
 };
 
 const SET_TOKEN = "setToken";
@@ -16,9 +16,21 @@ function reducer(state, action) {
 
   switch (action.type) {
     case SET_TOKEN:
+      localStorage.setItem("state", JSON.stringify({
+        token: action.payload.token,
+        user: action.payload.user
+      }));
       return {
         ...state,
-        token: action.payload,
+        token: action.payload.token,
+        user: action.payload.user
+      };
+    case "logout":
+      localStorage.removeItem("state");
+      return {
+        ...state,
+        token: null,
+        user: null
       };
     default:
       return state;
@@ -33,4 +45,4 @@ const Provider = ({ children }) => {
   );
 };
 
-export default Provider;
+export default Provider;
