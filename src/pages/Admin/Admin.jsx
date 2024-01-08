@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useContext } from "react";
 import "./Admin.css";
 import "bootstrap";
@@ -14,6 +15,7 @@ export default function Admin() {
   const [searchTermUser, setSearchTermUser] = useState("");
   const [searchTermTime, setSearchTermTime] = useState("");
   const [searchTermTable, setSearchTermTable] = useState("");
+  const [deleteError, setDeleteError] = useState(null);
   const navigate = useNavigate();
 
   const navigateSite = () => {
@@ -77,6 +79,19 @@ export default function Admin() {
     return navigateSite;
   }
 
+  const fetchUpdatedData = async () => {
+    try {
+      const ordersData = await fetch(
+        "https://localhost:7213/Order/Orders"
+      ).then((res) => res.json());
+      setAllOrders(ordersData);
+      setDeleteError(null);
+    } catch (error) {
+      console.error("Failed to fetch updated data from the API:", error);
+      setDeleteError("Failed to fetch updated data from the API.");
+    }
+  };
+
   const handleDeleteRow = async (id) => {
     try {
       const response = await fetch(
@@ -90,9 +105,10 @@ export default function Admin() {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      allOrders((prevData) => prevData.filter((order) => order.id !== id));
+      await fetchUpdatedData();
     } catch (error) {
       console.error("שגיאה בבקשה למחיקת שורה מה-API:", error);
+      setDeleteError("Failed to delete order. Please try again.");
     }
   };
 
@@ -100,6 +116,7 @@ export default function Admin() {
     <div className="admin_page">
       <div>
         <h1>טבלת הזמנות</h1>
+        {deleteError && <div className="error-message">{deleteError}</div>}
         <table className="table">
           <thead>
             <tr>
