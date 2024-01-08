@@ -10,9 +10,21 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [BD, setBD] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [emailError, setEmailError] = useState('');
+
+  const isEmailValid = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!isEmailValid(email)) {
+      setEmailError('Invalid email format.');
+      return;
+    }
+
     try {
       const response = await fetch("https://localhost:7213/Register", {
         method: 'post',
@@ -52,18 +64,18 @@ export default function Register() {
 
   return (
     <form className="loginRegister" onSubmit={handleSubmit}>
-        {submitted ? (
-          <>
-            <h1>Welcome, we will be happy to see you soon with us</h1>
-            <button className="button_SendHome" onClick={navigateSite}>
-                Back to Site
-              </button>
-          </>
-        ) : (
-          <>
-    <div className="loginRegister">
+      {submitted ? (
+        <>
+          <h1>Welcome, we will be happy to see you soon with us</h1>
+          <button className="button_SendHome" onClick={navigateSite}>
+            Back to Site
+          </button>
+        </>
+      ) : (
+        <>
+          <div className="loginRegister">
             <div className="auth_form_container">
-            <h1>Register</h1>
+              <h1>Register</h1>
               <label htmlFor="firstName">First Name</label>
               <input
                 value={firstName}
@@ -83,12 +95,16 @@ export default function Register() {
               <label htmlFor="email">Email</label>
               <input
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setEmailError('');
+                }}
                 type="email"
                 placeholder="YourEmail@******.com"
                 id="email"
                 name="email"
               />
+              {emailError && <p className="error-message">{emailError}</p>}
               <label htmlFor="phone">Phone</label>
               <input
                 value={phone}
@@ -124,10 +140,9 @@ export default function Register() {
                 Back to Site
               </button>
             </div>
-    </div>
-    </>
-        )}
-      </form>
+          </div>
+        </>
+      )}
+    </form>
   );
 };
-
