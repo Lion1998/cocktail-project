@@ -5,7 +5,6 @@ import { FaCocktail } from 'react-icons/fa';
 import images from '../../constants/images';
 import './Navbar.css';
 import { Context } from '../../Context';
-import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
   const { state, dispatch } = useContext(Context);
