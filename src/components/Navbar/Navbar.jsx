@@ -17,18 +17,16 @@ const Navbar = () => {
         <img src={images.logoNav} alt="app__logo" />
       </div>
       <ul className="app__navbar-links">
-        <li className="p__opensans"><a href="/home">Home</a></li>
+        <li className="p__opensans"><a href="#home">Home</a></li>
         <li className="p__opensans"><a href="#about">About</a></li>
         <li className="p__opensans"><a href="#menu">Menu</a></li>
         <li className="p__opensans"><a href="#contact">Contact</a></li>
         {state.user && state.user.type === 'Admin' && (
-          <li className="p__opensans">
-            <NavLink to="/admin">Orders</NavLink>
-          </li>
+          <li><a href="/admin" className="p__opensans btn btn-secondary">Orders</a></li>
         )}
         <div className="app__navbar-login ">
           {state.user && state.user.type !== 'Admin' && (
-            <a href="/book_table" className="p__opensans">Reserve a table!</a>
+            <a href="/book_table" className="p__opensans btn btn-secondary">Reserve a table!</a>
           )}
           {state.user == null ? (
             <a href="/login" className="p__opensans btn btn-outline-success">Login</a>
@@ -48,10 +46,10 @@ const Navbar = () => {
               <li><a href="#menu" onClick={() => setToggleMenu(false)}>Menu</a></li>  
               <li><a href="#contact" onClick={() => setToggleMenu(false)}>Contact</a></li>
               {state.user && state.user.type === 'Admin' && (
-                <li><NavLink to="/admin" onClick={() => setToggleMenu(false)}>Orders</NavLink></li>
+                <li><a to="/admin" onClick={() => setToggleMenu(false)}>Orders</a></li>
               )}
               {state.user && state.user.type !== 'Admin' && (
-                <li><NavLink to="/book_table" onClick={() => setToggleMenu(false)}>Reserve a table!</NavLink></li>
+                <li><a to="/book_table" onClick={() => setToggleMenu(false)}>Reserve a table!</a></li>
               )}
               {state.user == null ? (
                 <li><a href="/login" onClick={() => setToggleMenu(false)}>Login</a></li>
