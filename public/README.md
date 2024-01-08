@@ -141,3 +141,63 @@ ADMIN מחובר
 עוטף אותם כדי שהמשתמש ישאר במערכת
 ויזכר 
 נוסף גם שאם הלקוח/האדמין ינסו להגיע לנתיב שלא קיים יקבלו דף שמופיע בו Not Found 404
+
+
+# צד שרת
+## Program
+פה כנסתי כמה דברים
+אחד מהם זה את Authentication ראשוני
+שלוקח Issuer ,SecretForKey ,Audience
+![Authentication](./Imgs/Authentication.png)
+Policy הכנסתי פה גם 
+של ADMIN 
+
+## Models
+![Models](./Imgs/Models.png)
+לכל אחד מהם יש את הפרמטרים שאני מקבל ומביא בהתאם למה שאני צריך ובהתאם לטבלה
+בחלק מMODELS 
+אני יוצר דרישות והערות בהתאם לדרישות למשתמש 
+כמו פה ![Register C#](./Imgs/RegisterC#.png)
+
+## Contexts
+![Contexts C#](ContextsC#.png)
+לכל אחד מהMODELS יש CONTEXT משלו
+שיוצר לו חיבור לDATA 
+דוגמה:![TableContexts](./Imgs/TableContexts.png)
+
+## Controllers
+![Controllers](./Imgs/Controllers.png)
+חלק מהקונטרולרים נבנו לשימוש עתידי ומחשבה קדימה
+הCONTROLLER הכי חשוב הואAuthentication
+![Authentication Controller](./Imgs/AuthenticationController.png)
+שיוצר לנו את הTOKEN כולו
+זאת אומרת אני מכניס את הEMAIL & PASSWORD
+ומקבל טוקן שלוקח כמה פרמטרים של המשתמש ועוד כמה פרמטרים קימיים ויוצר לנו את הTOKEN
+
+בCONTROLLERS יש לנו 
+GET
+POST
+DELETE 
+ואופציה לPATCH בעתיד
+
+
+## SQL
+![Database](./Imgs/Database)
+יש 4 טבלאות 
+USERS
+EXPECTEDARRIVAL
+TABLES
+שמעברים  ID ל
+BOOKING
+ששומר את פירטי ההזמנה של הלקוחות
+לEXPECTEDARRIVAL אין PUST רק GET 
+כי הזמנים קבועים ולא נתנים לשנות 
+![EXPECTEDARRIVAL](./Imgs/EXPECTEDARRIVAL.png)
+וגם TABLES 
+לכל שולחן יש את המספר שלו כמות אנשים והאזור שהוא נמצא לכן גם פה נמשוך רק נתונים ולא נשנה
+![TABLES](./Imgs/TABLES.png)
+
+
+
+😂מקווה שאהבתם את בפרויקט שלי שנכתב בהרבה חוסר שינה ועצבים😂
+לשאלות מוזמנים לפנות אלי 
