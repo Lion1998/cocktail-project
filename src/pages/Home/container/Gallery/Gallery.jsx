@@ -20,7 +20,6 @@ const Gallery = () => {
     <div className="app__bg flex__center">
       <div className="app__gallery-content">
         <h1 className="headtext__cormorant">Photo Gallery</h1>
-        <button type="button" className="custom__button">View More</button>
       </div>
       <div className="app__gallery-images">
         <div className="app__gallery-images_container" ref={scrollRef}>

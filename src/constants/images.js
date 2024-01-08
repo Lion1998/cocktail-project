@@ -1,3 +1,4 @@
+
 import bg from '../assets/bg.png';
 import a from '../assets/a.png';
 import gallery01 from '../assets/gallery01.png';
@@ -11,8 +12,7 @@ import welcome from '../assets/welcome.png';
 import findus from '../assets/findus.png';
 import logoNav from '../assets/logoNav.png';
 
-
-export default {
+const images = {
   bg,
   a,
   gallery01,
@@ -26,3 +26,5 @@ export default {
   findus,
   logoNav,
 };
+
+export default images;

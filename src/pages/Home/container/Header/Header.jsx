@@ -9,8 +9,6 @@ const Header = () => (
     <div className="app__wrapper_info">
       <SubHeading title="Chase the new flavour" />
       <h1 className="app__header-h1">The Key For Your Cocktail</h1>
-      
-      <button type="button" className="custom__button">Explore Menu</button>
     </div>
 
     <div className="app__wrapper_img">

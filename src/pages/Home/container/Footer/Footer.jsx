@@ -1,13 +1,11 @@
 import React from 'react';
 import { FiFacebook, FiTwitter, FiInstagram } from 'react-icons/fi';
-import { Newsletter } from '../../../../components';
 import { images } from '../../../../constants';
 import './Footer.css';
 
 const Footer = () => (
   <div className="app__footer app__bg section__padding" id="login">
    
-    <Newsletter />
 
     <div className="app__footer-links">
       <div className="app__footer-links_contact">
@@ -19,7 +17,7 @@ const Footer = () => (
 
       <div className="app__footer-links_logo">
         <p className="p__opensans">&quot;The best way to find yourself is to lose yourself in the service of others.&quot;</p>
-        <img src={images.spoon} className="spoon__img" style={{ marginTop: 15 }} />
+        <img src={images.spoon} alt="" className="spoon__img" style={{ marginTop: 15 }} />
         <div className="app__footer-links_icons">
           <FiFacebook />
           <FiTwitter />
@@ -30,9 +28,9 @@ const Footer = () => (
       <div className="app__footer-links_work">
         <h1 className="app__footer-headtext">Working Hours</h1>
         <p className="p__opensans">Monday-Friday:</p>
-        <p className="p__opensans">10:00 pm - 04:00 am</p>
+        <p className="p__opensans">10:00 pm - 06:00 am</p>
         <p className="p__opensans">Saturday-Sunday:</p>
-        <p className="p__opensans">10:00 pm - 04:00 am</p>
+        <p className="p__opensans">10:00 pm - 06:00 am</p>
       </div>
     </div>
 
