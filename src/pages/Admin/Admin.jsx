@@ -10,18 +10,43 @@ export default function Admin() {
   const [allOrders, setAllOrders] = useState([]);
   const [displayedOrders, setDisplayedOrders] = useState([]);
   const [times, setTimes] = useState([]);
+  const [tables, setTables] = useState([]);
   const [user, setUser] = useState([]);
   const [searchTermDate, setSearchTermDate] = useState("");
   const [searchTermUser, setSearchTermUser] = useState("");
   const [searchTermTime, setSearchTermTime] = useState("");
   const [searchTermTable, setSearchTermTable] = useState("");
+  const [orderToEdit, setOrderToEdit] = useState({});
   const [deleteError, setDeleteError] = useState(null);
   const navigate = useNavigate();
 
   const navigateSite = () => {
     navigate("/");
   };
-
+  const updateOrder = async (order) => {
+    try {
+      const response = await fetch(
+        `https://localhost:7213/Order/${order.id}`,
+        {
+          method: "PUT",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(order),
+        }
+      )
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      await fetchUpdatedData();
+      setOrderToEdit({})
+    } catch (error) {
+      console.error("Failed to update order:", error);
+      setDeleteError("Failed to update order. Please try again.");
+    }
+  };
+  const updateOrderToEdit = (e,order)=> { 
+    setAllOrders(allOrders.map(o => o.id === order.id ? {...o, [e.target.name]: e.target.value} : o))
+    
+}
   const fetchData = async () => {
     try {
       const timesData = await fetch(
@@ -33,7 +58,11 @@ export default function Admin() {
       const userData = await fetch("https://localhost:7213/Register").then(
         (res) => res.json()
       );
+      const tablesData = await fetch("https://localhost:7213/Table").then(
+        (res) => res.json()
+      );
       setTimes(timesData);
+      setTables(tablesData);
       setAllOrders(ordersData);
       setUser(userData);
     } catch (error) {
@@ -64,7 +93,7 @@ export default function Admin() {
           .firstName.toLowerCase()
           .includes(searchTermUser.toLowerCase()) &&
         times
-          .find((t) => t.id === order.expectedArrivalID)
+          .find((t) => t.id == order.expectedArrivalID)
           .time.toLowerCase()
           .includes(searchTermTime.toLowerCase()) &&
         order.tablesID
@@ -167,10 +196,11 @@ export default function Admin() {
                 <td>{order.id}</td>
                 <td>{user.find((u) => u.id === order.userID).firstName}</td>
                 <td>
-                  {times.find((t) => t.id === order.expectedArrivalID).time}
+                  <select onChange={(e) => updateOrderToEdit (e,order)} disabled={order.id !== orderToEdit.id} name= "expectedArrivalID" value={order.expectedArrivalID}>{times.map((t) => <option key={t.id} value={t.id}>{t.time}</option>)}</select>
+                  
                 </td>
-                <td>{order.tablesID}</td>
-                <td>{order.date.split("T")[0]}</td>
+                <td><select onChange={(e) => updateOrderToEdit (e,order)} disabled={order.id !== orderToEdit.id} name= "tablesID" value={order.tablesID}>{tables.map((t) => <option key={t.id} value={t.id}>{t.id}</option>)}</select></td>
+                <td><input type="date" value={order.date.split("T")[0]} onChange={(e) => updateOrderToEdit (e,order)} disabled={order.id !== orderToEdit.id} name= "date" /></td>
                 <td>
                   <button
                     className="btn btn-danger"
@@ -178,6 +208,12 @@ export default function Admin() {
                   >
                     Delete
                   </button>
+                  <button 
+                    className="btn btn-light"
+                    onClick={() => order.id === orderToEdit.id ? updateOrder(order): setOrderToEdit(order)}>
+                     {order.id === orderToEdit.id ? "Save" : "Edit"} 
+                  </button>
+                  
                 </td>
               </tr>
             ))}

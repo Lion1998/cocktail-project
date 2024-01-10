@@ -144,6 +144,7 @@ ADMIN מחובר
 
 
 # צד שרת
+בשביל השימוש בצד השרת יש להוריד את הDATA AppointmentBooking.bacpac 
 ## Program
 פה כנסתי כמה דברים
 אחד מהם זה את Authentication ראשוני
