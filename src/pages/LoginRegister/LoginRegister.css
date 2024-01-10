@@ -59,4 +59,6 @@ button{
     color: #191717;
     text-decoration: underline;
 }
-
+.error-message {
+    color: red;
+  }

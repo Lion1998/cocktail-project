@@ -11,17 +11,47 @@ export default function Register() {
   const [BD, setBD] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [emailError, setEmailError] = useState('');
+  const [phoneError] = useState('');
+  const [passwordError] = useState('');
+  const [dateError] = useState('');
+  const [errors, setErrors] = useState({});
 
   const isEmailValid = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
+  const isPhoneValid = (phone) => {
+    return /^[0-9]{10,13}$/.test(phone);
+  };
+
+  const isDateValid = (date) => {
+    return /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(date);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const newErrors = {};
+
     if (!isEmailValid(email)) {
-      setEmailError('Invalid email format.');
+      newErrors.email = 'Invalid email format.';
+    }
+
+    if (!isPhoneValid(phone)) {
+      newErrors.phone = 'Invalid phone number format.';
+    }
+
+    if (password.length < 5) {
+      newErrors.password = 'Password should be at least 5 characters long.';
+    }
+
+    if (!isDateValid(BD)) {
+      newErrors.BD = 'Invalid date format (YYYY-MM-DD).';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
@@ -76,6 +106,20 @@ export default function Register() {
           <div className="loginRegister">
             <div className="auth_form_container">
               <h1>Register</h1>
+              {Object.keys(errors).length > 0 && (
+                <div className="error-container">
+                  <p className="error-message">
+                    Please fix the following errors before submitting the form:
+                  </p>
+                  <ul>
+                    {Object.values(errors).map((errorMessage, index) => (
+                      <li key={index} className="error-message">
+                        {errorMessage}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               <label htmlFor="firstName">First Name</label>
               <input
                 value={firstName}
@@ -114,6 +158,7 @@ export default function Register() {
                 name="phone"
                 pattern="[0-9]{3}[0-9]{4}[0-9]{3}"
               />
+              {phoneError && <p className="error-message">{phoneError}</p>}
               <label htmlFor="password">Password</label>
               <input
                 value={password}
@@ -123,6 +168,7 @@ export default function Register() {
                 id="password"
                 name="password"
               />
+              {passwordError && <p className="error-message">{passwordError}</p>}
               <label htmlFor="BD">Birthday</label>
               <input
                 value={BD}
@@ -132,6 +178,7 @@ export default function Register() {
                 id="BD"
                 name="BD"
               />
+              {dateError && <p className="error-message">{dateError}</p>}
               <button type="submit">Sign In</button>
               <button className="link-btn" onClick={navigateLogin}>
                 Already have an account? Login here.
