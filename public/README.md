@@ -182,7 +182,7 @@ DELETE
 
 
 ## SQL
-![Database](./Imgs/Database)
+![(Database)](Imgs/Database.png)
 יש 4 טבלאות 
 USERS
 EXPECTEDARRIVAL
