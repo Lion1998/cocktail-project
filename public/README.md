@@ -5,7 +5,7 @@
 EMAIL : lion.zolotarov@gmail.com
 
 
-# התקנה 
+# התקנה  
 מורידים גם את הפורנט לVSCOD
  ואת הבקנד לVS https://github.com/Lion1998/back-cocktail-project 
  בתוך הבקנד יש לנו AppointmentBooking.bacpac שאותו אנחנו מכניסים לSQL זאת הDATA שלנו
